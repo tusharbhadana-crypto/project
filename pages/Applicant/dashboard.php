@@ -1,9 +1,10 @@
 <?php
     session_start();
+
     if($_SESSION['login']!==true){
-        die("login required");
+        die("login required ");
     }
-    require '../db/db.php';
+    require '../../db/db.php';
     $user_code=$_SESSION['user_code'];
 
     $sql = "select * from users where username='$user_code' or email='$user_code'";
@@ -41,6 +42,6 @@
 </head>
 <body>
     <a href="profile.php">Profile</a>
-    <a href="tushar/pages"></a>
+    <a href="tushar/pages">ghfgndfgh</a>
 </body>
 </html>

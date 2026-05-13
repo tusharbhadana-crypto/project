@@ -1,5 +1,9 @@
 <?php
     session_start();
+    if($_SESSION['login']!==true){
+        die("login required");
+    }
+    
 ?>
 
 <!DOCTYPE html>
@@ -61,6 +65,15 @@
                     </p>
 
                 </div>
+                <form method="POST">
+
+                    <button 
+                    //action="$_SERVER[PHP_SELF]"  name="submit_btn"
+                    >
+                         Log Out
+                    </button>
+
+                </form>
 
             </div>
 

@@ -1,3 +1,48 @@
+<?php
+    
+    require '../db/db.php';
+
+    $username_error="";
+    $pass_error=false;
+    
+    if($_SERVER['REQUEST_METHOD']=="POST"){
+        $username=$_POST['username'];
+        
+        $password=$_POST['password'];
+    }
+    if((preg_match("/^[a-zA-Z0-9_]+$/", $username)||filter_var($username, FILTER_VALIDATE_EMAIL))){
+        $username_error="enter correct username/email";
+    }
+    $sql="select user_id,role,password from users where username='$username' OR email = '$username' ";
+        // if(strpos($username,'@')!==false){
+        //     $sql="select password from users where email='$username'";
+        //     // echo "email";
+        // }else{
+        //     $sql="select password from users where username='$username'";
+        //     // echo "username";
+        // }
+    $result=$conn->query($sql);
+    if($result->num_rows>0){
+        $row=$result->fetch_assoc();
+        if(password_verify($password,$row['password'])){
+            $username_error="";
+            $pass_error=false;
+            session_start();
+            $_SESSION['login']=true;
+            $_SESSION['user_id']=$row['user_id'];
+            $_SESSION['user_code']=$username;
+            $_SESSION['role']=$row['role'];
+            header("location:/tushar/pages/".$_SESSION['role']."/dashboard.php");
+        }else{
+            $pass_error=true;
+        }
+    }else{
+        $username_error="username does not exist";
+    }
+
+    
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +60,7 @@
 
             <h3 class="text-center mb-4">Login</h3>
 
-            <form action="/tushar/controllers/auth.php" method="post">
+            <form action="<?php echo $_SERVER['PHP_SHELF']?>" method="post">
 
                 <div  class="mb-3">
                     <label class="form-label">
@@ -27,11 +72,12 @@
                         name="username" 
                         class="form-control"
                         placeholder="Enter username or email"
+                        required
                     >
                 </div>
         <?php
-            if(isset($_GET['username_error'])){
-                echo "<div style=\"color: red;\">".$_GET['username_error']."</div>";
+            if($username_error!==""){
+                echo "<div style=\"color: red;\">.$username_error.</div>";
             }
         ?>
 
@@ -45,11 +91,12 @@
                         name="password" 
                         class="form-control"
                         placeholder="Enter password"
+                        required
                     >
                 </div>
         <?php
-            if(isset($_GET['password_error'])){
-                echo "<div style=\"color: red;\">".$_GET['password_error']."</div>";
+            if($pass_error){
+                echo "<div style=\"color: red;\">wrong password</div>";
             }
         ?>
 
