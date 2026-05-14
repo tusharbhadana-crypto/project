@@ -4,10 +4,18 @@
 
 
     if($_SESSION['login']!==true){
-        header("location:../login.php");
+        echo "<script>
+        alert('You are not logged in go back to login');
+        window.location.href='../login.php';
+        </script>";
+        exit();
     }
     if($_SESSION['role']!=="Applicant"){
-        header("location:../login.php");
+        echo "<script>
+        alert('You do not have access to this page go back to login');
+        window.location.href='../login.php';
+        </script>";
+        exit();
     }
     $error="";
     $email_error="";
@@ -52,7 +60,10 @@
         echo "<br>";
 
         if($conn->query($sql) === true){
-            header("location:/tushar/job_management/pages/".$_SESSION['role']."/dashboard.php");
+            echo "<script>
+            alert('Profile updated successfully');
+            window.location.href='dashboard.php';
+            </script>";
         }else{
               echo "Error: " . $sql . "<br>" . $conn->error;
         }
@@ -68,11 +79,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f3f5f7;
+            min-height: 100vh;
+        }
+        .page-wrap {
+            min-height: calc(100vh - 72px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 12px;
+        }
+        .update-card {
+            width: 100%;
+            max-width: 460px;
+            border: 0;
+            border-radius: 12px;
+        }
+    </style>
 </head>
-<body class="bg-light d-flex  flex-column justify-content-center align-items-center vh-120">
+<body>
 
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary w-100">
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm">
   <div class="container-fluid">
     <a class="navbar-brand" href="dashboard.php">Job Managment</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -93,9 +123,10 @@
     </div>
   </div>
 </nav>
-    <div style="margin-top:100px" >
+    <div class="page-wrap">
+    <div class="card shadow update-card p-4">
 
-        <div class="card-body ">
+        <div class="card-body">
 
             <h3 class="text-center mb-4">Register</h3>
 
@@ -182,11 +213,11 @@
                         required
                     >
                 </div>
-//        <?php
-//            if($error!==""){
-//                echo "<div style=\"color: red;\">wrong password</div>";
-//            }
-//        ?>
+        <?php
+            // if($error!==""){
+            //     echo "<div style=\"color: red;\">wrong password</div>";
+            // }
+        ?>
                 <button type="submit" class="btn btn-primary w-100">
                     Update Profile
                 </button>
@@ -195,6 +226,7 @@
 
         </div>
 
+    </div>
     </div>
 
 </body>

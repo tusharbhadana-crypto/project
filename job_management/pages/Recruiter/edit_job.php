@@ -4,10 +4,18 @@
 
 
     if($_SESSION['login']!==true){
-        header("location:../login.php");
+        echo "<script>
+        alert('You are not logged in go back to login');
+        window.location.href='../login.php';
+        </script>";
+        exit();
     }
     if($_SESSION['role']!=="Recruiter"){
-        header("location:../login.php");
+        echo "<script>
+        alert('You do not have access to this page go back to login');
+        window.location.href='../login.php';
+        </script>";
+        exit();
     }
     if(isset($_GET) && (!empty($_GET['id']))){
         $sql="select * from jobs where id=".$_GET['id'];
@@ -35,7 +43,10 @@
             where id=".$id;
 
         if($conn->query($sql)===TRUE){
-            die("job added");
+            echo "<script>
+            alert('Job updated successfully');
+            window.location.href='dashboard.php';
+            </script>";
         }else{
             die("error is ".$conn->error);
         }
@@ -51,14 +62,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f3f5f7;
+            min-height: 100vh;
+        }
+        .page-wrap {
+            min-height: calc(100vh - 72px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 12px;
+        }
+        .edit-card {
+            width: 100%;
+            max-width: 440px;
+            border: 0;
+            border-radius: 12px;
+        }
+    </style>
 </head>
-<body class="bg-light d-flex justify-content-center align-items-center vh-100">
+<body>
 
-    <div class="card shadow p-4" style="width: 400px;">
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="dashboard.php">Job Managment</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                    <a class="nav-link" href="../dashboard.php">Home</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="../profile.php">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="../add_jobs.php">Post New Job</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="update_profile.php?id=1">Update Profile</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-wrap">
+    <div class="card shadow edit-card p-4">
 
         <div class="card-body">
 
-            <h3 class="text-center mb-4">Register</h3>
+            <h3 class="text-center mb-4">Edit Job</h3>
 
             <form action="<?php echo $_SERVER['PHP_SELF']?>" method="post">
 
@@ -118,6 +175,7 @@
 
         </div>
 
+    </div>
     </div>
 
 </body>
