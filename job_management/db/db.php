@@ -8,6 +8,6 @@
     if($conn->connect_error){
         die("the error occured id  :-- $conn->connect_error");
     }{
-        // echo "db connected successfully";
+        echo "db connected successfully";
     }
 ?>

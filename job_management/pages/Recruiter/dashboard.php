@@ -48,8 +48,23 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+    <nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+        <a class="navbar-brand" href="<?php echo "dashboard.php"?>"></a>
+        </div>
+        <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">Page 1</a></li>
+        <li><a href="#">Page 2</a></li>
+        <li><a href="#">Page 3</a></li>
+        </ul>
+    </div>
+    </nav>
+
     <a href="profile.php">Profile</a>
-    <a href="add_jobs.php">Add a new </a>
+    <a href="add_jobs.php">Post New Job </a>
+    <a href="update_profile.php?id=1">Update Profile</a>
     <div>
         <table class="table-bordered">
             <tr>

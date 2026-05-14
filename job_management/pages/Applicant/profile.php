@@ -1,9 +1,15 @@
 <?php
     session_start();
     if($_SESSION['login']!==true){
-        die("login required");
+        header("location:../login.php");
     }
-    
+    if($_SESSION['role']!=="Applicant"){
+        header("location:../login.php");
+    }
+    if($_SERVER['REQUEST_METHOD']==='POST'){
+        session_destroy();
+        header("location:../login.php");
+    }
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +23,27 @@
 </head>
 
 <body class="bg-light">
-
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="dashboard.php">Job Managment</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+            <a class="nav-link " aria-current="page" href="dashboard.php">Home</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link  active" href="profile.php">Profile</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="update_profile.php?id=1">Update Profile</a>
+            </li>
+        </ul>
+        </div>
+    </div>
+    </nav>
     <div class="container mt-5">
 
         <div class="card shadow mx-auto" style="max-width: 500px;">
@@ -65,11 +91,9 @@
                     </p>
 
                 </div>
-                <form method="POST">
+                <form action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
 
-                    <button 
-                    //action="$_SERVER[PHP_SELF]"  name="submit_btn"
-                    >
+                    <button  name="submit_btn">
                          Log Out
                     </button>
 

@@ -1,7 +1,22 @@
 <?php
-    require '../db/db.php';
+    session_start();
+    require '../../db/db.php';
+
+
+    if($_SESSION['login']!==true){
+        header("location:../login.php");
+    }
+    if($_SESSION['role']!=="Recruiter"){
+        header("location:../login.php");
+    }
     $error="";
     $email_error="";
+    
+    if(isset($_GET) && (!empty($_GET['id']))){
+        $sql="select * from users where user_id=".$_SESSION['user_id'];
+        $result=$conn->query($sql);
+        $row=$result->fetch_assoc();
+    }
     if($_SERVER['REQUEST_METHOD']=='POST'){
         
         if(empty($_POST['role']) ||  empty($_POST['username'])  ||  empty($_POST['name']) ||  empty($_POST['email']) ||  empty($_POST['password']) ||  empty($_POST['phone_no']) || empty($_POST['image_url'])){
@@ -19,19 +34,31 @@
         $phone_no=$_POST['phone_no'];
         $image_url=$_POST['image_url'];
 
-        $sql="insert into users (role,username,name,email,password,phone_no,image_url) values ('$role','$username','$name','$email','$password','$phone_no','$image_url')";
+        // $sql_pass="update users set
+        // password='$password'
+        // where user_id=".$_SESSION['user_id'];
+
+
+        $sql="update  users set 
+        role  = '$role',
+        username  ='$username',
+        name ='$name',
+        email  ='$email',
+        password='$password',
+        phone_no ='$phone_no',
+        image_url='$image_url'
+        where user_id=".$_SESSION['user_id'];
         echo "<br>";
-        // print_r ($_POST);
         echo "<br>";
 
         if($conn->query($sql) === true){
-            // echo "data entered successfuly";
-            header("location:/tushar/job_management/pages/login.php");
+            header("location:/tushar/job_management/pages/".$_SESSION['role']."/dashboard.php");
         }else{
               echo "Error: " . $sql . "<br>" . $conn->error;
         }
     }
 ?>
+
 
 
 <!DOCTYPE html>
@@ -40,7 +67,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body class="bg-light d-flex justify-content-center align-items-center vh-100">
 
@@ -54,17 +80,12 @@
 
                 <div class="mb-3">
                     <label class="form-label">Role</label>
-                    <!-- <input 
-                        type="text" 
-                        name="role" 
-                        class="form-control"
-                        placeholder="Enter role"
-                        
-                    > -->
+                    
                     <select name="role" id="" class="form-select" required>
                         <option value="" selected disabled>Select Role</option>
                         <option value="Recruiter">Recruiter</option>
                         <option value="Applicant">Applicant</option>
+                        
                     </select>
                 </div>
 
@@ -75,6 +96,7 @@
                         name="username" 
                         class="form-control"
                         placeholder="Enter username"
+                        value="<?php echo $row['username']?>"
                         required
                     >
                 </div>
@@ -86,6 +108,7 @@
                         name="name" 
                         class="form-control"
                         placeholder="Enter name"
+                        value="<?php echo $row['name']?>"
                         required
                     >
                 </div>
@@ -97,12 +120,13 @@
                         name="email" 
                         class="form-control"
                         placeholder="Enter email"
+                        value="<?php echo $row['email']?>"
                         required
                     >
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Password</label>
+                    <label class="form-label">Enter New Password</label>
                     <input 
                         type="password" 
                         name="password" 
@@ -119,6 +143,7 @@
                         name="phone_no" 
                         class="form-control"
                         placeholder="Enter phone number"
+                        value="<?php echo $row['phone_no']?>"
                         required
                     >
                 </div>
@@ -130,16 +155,17 @@
                         name="image_url" 
                         class="form-control"
                         placeholder="Enter image URL"
+                        value="<?php echo $row['image_url']?>"
                         required
                     >
                 </div>
-        <?php
-            if($error!==""){
-                echo "<div style=\"color: red;\">wrong password</div>";
-            }
-        ?>
+//        <?php
+//            if($error!==""){
+//                echo "<div style=\"color: red;\">wrong password</div>";
+//            }
+//        ?>
                 <button type="submit" class="btn btn-primary w-100">
-                    Register
+                    Update Profile
                 </button>
 
             </form>

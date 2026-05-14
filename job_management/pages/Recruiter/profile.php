@@ -6,7 +6,10 @@
     if($_SESSION['role']!=="Recruiter"){
         header("location:../login.php");
     }
-    
+    if($_SERVER['REQUEST_METHOD']==='POST'){
+        session_destroy();
+        header("location:../login.php");
+    }   
 ?>
 
 <!DOCTYPE html>
@@ -70,9 +73,7 @@
                 </div>
                 <form method="POST">
 
-                    <button 
-                    //action="$_SERVER[PHP_SELF]"  name="submit_btn"
-                    >
+                    <button  action="<?php echo $_SERVER['PHP_SELF']?>" name="submit_btn"   >
                          Log Out
                     </button>
 
