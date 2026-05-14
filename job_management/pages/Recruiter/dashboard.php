@@ -2,7 +2,10 @@
     session_start();
     require '../../db/db.php';
     if($_SESSION['login']!==true){
-        die("login required");
+        header("location:../login.php");
+    }
+    if($_SESSION['role']!=="Recruiter"){
+        header("location:../login.php");
     }
     require '../../db/db.php';
     $user_code=$_SESSION['user_code'];

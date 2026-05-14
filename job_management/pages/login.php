@@ -32,7 +32,7 @@
             $_SESSION['user_id']=$row['user_id'];
             $_SESSION['user_code']=$username;
             $_SESSION['role']=$row['role'];
-            header("location:/tushar/pages/".$_SESSION['role']."/dashboard.php");
+            header("location:/tushar/job_management/pages/".$_SESSION['role']."/dashboard.php");
         }else{
             $pass_error=true;
         }

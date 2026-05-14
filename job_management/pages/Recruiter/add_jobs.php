@@ -2,12 +2,10 @@
     session_start();
     require '../../db/db.php';
     if($_SESSION['login']!==true){
-        echo("login required");
-        die("login required");
+        header("location:../login.php");
     }
     if($_SESSION['role']!=="Recruiter"){
-        echo("not authorised");
-        die("not authorised");
+        header("location:../login.php");
     }
 
     if($_SERVER['REQUEST_METHOD']=="POST"){

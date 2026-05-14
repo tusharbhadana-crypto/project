@@ -27,7 +27,7 @@
 
         if($conn->query($sql) === true){
             // echo "data entered successfuly";
-            header("location:/tushar/pages/login.php");
+            header("location:/tushar/job_management/pages/login.php");
         }else{
               echo "Error: " . $sql . "<br>" . $conn->error;
         }

@@ -1,43 +1,26 @@
 <?php
     session_start();
     require '../../db/db.php';
-
-
     if($_SESSION['login']!==true){
         header("location:../login.php");
     }
-    if($_SESSION['role']!=="Recruiter"){
+    if($_SESSION['role']!=="Applicant"){
         header("location:../login.php");
     }
-    if(isset($_GET) && (!empty($_GET['id']))){
-        $sql="select * from jobs where id=".$_GET['id'];
-        $result=$conn->query($sql);
-        $row=$result->fetch_assoc();
-        $id=$_GET['id'];
-        
-    }
+
     if($_SERVER['REQUEST_METHOD']=="POST"){
 
         $job_title=$_POST['job_title'];
         $job_description=$_POST['job_description'];
         $close_date=$_POST['close_date'];
         $status=$_POST['status'];
-        $user_id=$_SESSION['user_id']; 
-
-        $id=$_POST['id'];
-
-
-        $sql="update jobs set
-            job_title='$job_title',
-            job_description='$job_description',
-            close_date='$close_date',
-            status='$status'
-            where id=".$id;
+        $user_id=$_SESSION['user_id'];        
+        $sql="insert into jobs (job_title,job_description,recruiter_id,close_date,status) values('$job_title','$job_description','$user_id','$close_date','$status')";
 
         if($conn->query($sql)===TRUE){
             die("job added");
         }else{
-            die("error is ".$conn->error);
+            die("error is ".$conn->connect_error);
         }
 
     }
@@ -72,7 +55,6 @@
                         class="form-control"
                         placeholder="Enter Job title"
                         required
-                        value="<?php echo $row['job_title'] ?>"
                     >
                 </div>
 
@@ -84,10 +66,19 @@
                         class="form-control"
                         placeholder="Enter name"
                         required
-                        value="<?php echo $row['job_description'] ?>"
                     >
                 </div>
-
+<!-- 
+                <div class="mb-3">
+                    <label class="form-label">Open Date</label>
+                    <input 
+                        type="date" 
+                        name="email" 
+                        class="form-control"
+                        placeholder="Enter email"
+                        required
+                    >
+                </div> -->
 
                 <div class="mb-3">
                     <label class="form-label">Close Date</label>
@@ -97,19 +88,22 @@
                         class="form-control"
                         placeholder="Enter Close Date"
                         required
-                        value="<?php  echo $row['close_date']?>"
                     >
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Status</label>
-                    <select name="status" id="" class="form-select" required  value="">
+                    <select name="status" id="" class="form-select" required>
                         <option value="" selected disabled>Select Role</option>
-                        <option <?php  if($row['status']=="active") echo"selected"; ?> value="active">Active</option>
-                        <option <?php  if($row['status']=="closed") echo"selected"; ?> value="closed">Closed</option>
+                        <option value="active">Active</option>
+                        <option value="closed">Closed</option>
                     </select>
                 </div>
-                <input type="hidden" name="id" value= <?php echo $id?> >
+        <?php
+            // if($error!==""){
+            //     echo "<div style=\"color: red;\">wrong password</div>";
+            // }
+        ?>
                 <button type="submit" class="btn btn-primary w-100">
                     Save
                 </button>

@@ -14,7 +14,7 @@
         <h3 class="mb-4">Welcome</h3>
 
         <a 
-            href="/tushar/pages/sign_up.php" 
+            href="/tushar/job_management/pages/sign_up.php" 
             class="btn btn-primary w-100 mb-3"
         >
             Sign Up
@@ -25,7 +25,7 @@
         </p>
 
         <a 
-            href="/tushar/pages/login.php" 
+            href="/tushar/job_management/pages/login.php" 
             class="btn btn-outline-primary w-100"
         >
             Sign In

@@ -1,7 +1,10 @@
 <?php
     session_start();
     if($_SESSION['login']!==true){
-        die("login required");
+        header("location:../login.php");
+    }
+    if($_SESSION['role']!=="Recruiter"){
+        header("location:../login.php");
     }
     
 ?>
