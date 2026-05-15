@@ -37,33 +37,23 @@
 
     
 
-    $limit = 5;
-    $page = (int)($_GET['page'] ?? 1);
-    if($page < 1) $page = 1;
-    $app_page = (int)($_GET['app_page'] ?? 1);
-    if($app_page < 1) $app_page = 1;
-    $total_users = (int)$conn->query("select count(*) as total from users where role in ('Recruiter','Applicant')")->fetch_assoc()['total'];
-    $total_pages = (int)ceil($total_users / $limit);
-    $offset = ($page - 1) * $limit;
-    $sql_users = "select user_id ,role, username, name,email, phone_no, image_url from users where role in ( 'Recruiter','Applicant') order by user_id desc limit $limit offset $offset";
-
-    // $app_limit = 5;
-    // $app_page = (int)($_GET['app_page'] ?? 1);
-    // if($app_page < 1) $app_page = 1;
-    // $total_applications = (int)$conn->query("select count(*) as total from applications where applicant_id=".$_SESSION['user_id'])->fetch_assoc()['total'];
-    // $total_app_pages = (int)ceil($total_applications / $app_limit);
-    // $app_offset = ($app_page - 1) * $app_limit;
-    $sql_applications = "select * from applications where applicant_id=".$_SESSION['user_id']." order by id desc limit $app_limit offset $app_offset";
-    
-    
-    
-    $result_users=$conn->query($sql_users);
-    // $result_applications=$conn->query($sql_applications);
 
 
-    // $ok=$result_users->fetch_assoc();
-    // print_r($ok);
-    // die();
+    $tabs=5;
+    $page_count_sql="select count(*) as pagess from users ";
+    $ans=$conn->query($page_count_sql);
+    $data_count=$ans->fetch_assoc()['pagess'];
+    $no_of_pages=ceil($data_count/$tabs);
+    $current_page= isset($_GET['current_page']) ? $_GET['current_page']:1;
+    $current_page=max(1,min($current_page,$no_of_pages));
+    $start_limit=($current_page-1)*$tabs;
+    $pagination_sql="select * from users  limit ".$start_limit.",".$tabs;
+    // echo("ye start page  =>".$start_limit);
+    echo $pagination_sql;
+
+    $new_result=$conn->query($pagination_sql);
+    $new_row=$new_result->fetch_assoc();
+
     
 ?>
 <!DOCTYPE html>
@@ -148,21 +138,21 @@
             <tbody>
             <?php
                 $i=$offset + 1;
-                while($row_jobs=$result_users->fetch_assoc()){
+                while($new_row=$new_result->fetch_assoc()){
             ?>
                     <?php   echo "<tr>";?>
                     <?php   echo "<td>".$i++." </td>";?>
-                    <?php   echo"<td>".$row_jobs['username']."   </td>";?>
-                    <?php   echo "<td>".$row_jobs['name']."   </td>";?>
-                    <?php   echo "<td>".$row_jobs['email']."   </td>";?>
-                    <?php   echo "<td>".$row_jobs['role']."   </td>";?>
-                    <?php   echo "<td>".$row_jobs['phone_no']."   </td>";?>
+                    <?php   echo"<td>".$new_row['username']."   </td>";?>
+                    <?php   echo "<td>".$new_row['name']."   </td>";?>
+                    <?php   echo "<td>".$new_row['email']."   </td>";?>
+                    <?php   echo "<td>".$new_row['role']."   </td>";?>
+                    <?php   echo "<td>".$new_row['phone_no']."   </td>";?>
 
                     <?php   echo "<td>";?>
                         <form   action="<?php  
-                        $idd=$row_jobs['id']; 
+                        $idd=$new_row['id']; 
                         echo "dashboard.php?id=$idd"?>" method="get">
-                            <input type="hidden" value="<?php echo $row_jobs['user_id'] ?>" name="job_id"> 
+                            <input type="hidden" value="<?php echo $new_row['user_id'] ?>" name="job_id"> 
                             <button class="btn btn-primary btn-sm apply-btn">View Details</button>
                         </form>
                     <?php   echo "</td>";?>
@@ -176,14 +166,14 @@
         </div>
         <nav class="mt-3">
             <ul class="pagination justify-content-center mb-0">
-                <li class="page-item <?php echo ($page <= 1) ? 'disabled' : ''; ?>">
-                    <a class="page-link" href="?page=<?php echo $page - 1; ?>&app_page=<?php echo $app_page; ?>">Previous</a>
+                <li class="page-item <?php echo ($current_page <= 1) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="?current_page=<?php echo $current_page - 1; ?>&app_page=<?php echo $app_page; ?>">Previous</a>
                 </li>
                 <li class="page-item disabled">
                     <span class="page-link"><?php echo $page; ?> / <?php echo $total_pages; ?></span>
                 </li>
-                <li class="page-item <?php echo ($page >= $total_pages) ? 'disabled' : ''; ?>">
-                    <a class="page-link" href="?page=<?php echo $page + 1; ?>&app_page=<?php echo $app_page; ?>">Next</a>
+                <li class="page-item <?php echo ($current_page >= $no_of_pages) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="?current_page=<?php echo $current_page + 1; ?>&app_page=<?php echo $app_page; ?>">Next</a>
                 </li>
             </ul>
         </nav>
