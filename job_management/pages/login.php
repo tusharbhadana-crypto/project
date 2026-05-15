@@ -2,7 +2,7 @@
     session_start();
     if(isset($_SESSION['login'])){
         $role=$_SESSION['role'];
-        echo "<script>alert('please logout first');
+        echo "<script> alert('please logout first');
         window.location.href='$role/dashboard.php';
         </script>;
         ";

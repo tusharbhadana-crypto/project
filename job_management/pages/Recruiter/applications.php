@@ -17,7 +17,8 @@
     }
     require '../../db/db.php';
     if(isset($_GET) && (!empty($_GET['job_id']))){
-        $sql="select * from applications where job_id=".$_GET['job_id'];
+        $sql="SELECT applications.*, users.username,users.name FROM applications JOIN users ON applications.applicant_id = users.user_id WHERE applications.job_id=".$_GET['job_id'];
+        // $sql="select * from applications where job_id=".$_GET['job_id'];
         $result=$conn->query($sql);
         
     }
@@ -90,8 +91,9 @@
         <table class="table table-bordered table-hover mb-0">
             <thead>
             <tr>
-                <!-- <th>Job Id</th>
-                <th>Applicant Id</th> -->
+
+                <th>Applicant username</th>
+                <th>Applicant Name</th>
                 <th>Submitted CV</th>
 
                 <th>Application Status</th>
@@ -103,8 +105,9 @@
                 if(isset($result) && $result->num_rows > 0){
                     while($row=$result->fetch_assoc()){
                         echo "<tr>";
-                            // echo "<td>".$row['job_id']." </td>";
-                            // echo "<td>".$row['applicant_id']."   </td>";
+
+                            echo "<td>".$row['username']."   </td>";
+                            echo "<td>".$row['name']." </td>";
                             echo "<td><a class='cv-link' href='../Applicant/".$row['cv']."'>".$row['cv']."</a></td>";
                             echo "<td>".$row['status']."   </td>";
                             echo "<td><a class='edit-link' href='edit_status.php?application_id=".$row['id']."'>Edit</a></td>";   
