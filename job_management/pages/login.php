@@ -1,8 +1,16 @@
 <?php
-    
+    session_start();
+    if(isset($_SESSION['login'])){
+        $role=$_SESSION['role'];
+        echo "<script>alert('please logout first');
+        window.location.href='$role/dashboard.php'</script>;
+        ";
+        exit();
+    }
+
     require '../db/db.php';
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+
+
     $username_error="";
     $pass_error=false;
     
@@ -26,7 +34,6 @@ ini_set('display_errors', 1);
                 $_SESSION['user_id']=$row['user_id'];
                 $_SESSION['user_code']=$username;
                 $_SESSION['role']=$row['role'];
-
                 header("location:/tushar/job_management/pages/".$_SESSION['role']."/dashboard.php");
             }else{
                 $pass_error=true;

@@ -1,6 +1,6 @@
 <?php
     $username="root";
-    $pass="";
+    $pass="phpmyadmin";
     $server="localhost";
     $dbname="job_portal";
 

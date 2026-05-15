@@ -37,8 +37,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $image_name = $_FILES['cv']['name'];
     $tmp_name = $_FILES['cv']['tmp_name'];
     $folder = "uploads/" . basename($image_name);
-
-        echo"hiiiiiiiiiiiiiiiii";
+    echo $image_name."<br>";
+    echo $folder;
+        // echo";
     if (move_uploaded_file($tmp_name, $folder)) {
             
         $sql="insert into applications (

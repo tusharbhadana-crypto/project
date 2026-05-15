@@ -34,7 +34,7 @@
             $email_error="incorrect email";
         }
 
-        $role=$_POST['role'];
+        // $role=$_POST['role'];
         $username=$_POST['username'];
         $name=$_POST['name'];
         $email=$_POST['email'];
@@ -48,7 +48,7 @@
 
 
         $sql="update  users set 
-        role  = '$role',
+
         username  ='$username',
         name ='$name',
         email  ='$email',
@@ -132,7 +132,7 @@
 
             <form action="<?php echo $_SERVER['PHP_SELF']?>" method="post">
 
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                     <label class="form-label">Role</label>
                     
                     <select name="role" id="" class="form-select" required>
@@ -141,7 +141,7 @@
                         <option value="Applicant">Applicant</option>
                         
                     </select>
-                </div>
+                </div> -->
 
                 <div class="mb-3">
                     <label class="form-label">Username</label>
