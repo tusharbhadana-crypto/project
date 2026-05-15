@@ -35,3 +35,82 @@ create table applications (
     FOREIGN KEY (job_id) REFERENCES jobs(id)
 );
 
+
+
+
+
+
+
+
+
+
+
+
+                    <?php   echo "<td>";?>
+                        <form   action="<?php  
+                            $idd=$new_row['user_id'];
+                            echo "dashboard.php?id=$idd"?>" method="get">
+                                <input type="hidden" value="<?php echo $new_row['user_id'] ?>" name="user_id"> 
+                            <button class="btn btn-primary btn-sm apply-btn">Delete User</button>
+                        </form>
+                    <?php   echo "</td>";?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h1 class="page-title">All Jobs</h1>
+    <div class="container">
+        <div class="card shadow-sm jobs-card">
+        <div class="table-responsive">
+        <table class="table table-bordered table-hover mb-0">
+            <thead>
+            <tr>
+                <th>Job Id</th>
+                <th>Submitted CV</th>
+                <th>CV</th>
+                <th>Application Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+                while($row=$result_applications->fetch_assoc()){
+                    echo "<tr>";
+                        echo "<td>".$row['job_id']." </td>";
+                        echo "<td>".$row['applicant_id']."   </td>";
+                        echo "<td><a href='".$row['cv']."'>".$row['cv']."</a></td>";
+                        echo "<td>".$row['status']."   </td>";
+                    echo "</tr>";
+                }
+            ?>
+            </tbody>
+        </table>
+        </div>
+        </div>
+        <nav class="mt-3">
+            <ul class="pagination justify-content-center mb-0">
+                <li class="page-item <?php echo ($app_page <= 1) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="?page=<?php echo $page; ?>&app_page=<?php echo $app_page - 1; ?>">Previous</a>
+                </li>
+                <li class="page-item disabled">
+                    <span class="page-link"><?php echo $app_page; ?> / <?php echo $total_app_pages; ?></span>
+                </li>
+                <li class="page-item <?php echo ($app_page >= $total_app_pages) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="?page=<?php echo $page; ?>&app_page=<?php echo $app_page + 1; ?>">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>

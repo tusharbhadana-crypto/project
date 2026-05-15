@@ -3,7 +3,8 @@
     if(isset($_SESSION['login'])){
         $role=$_SESSION['role'];
         echo "<script>alert('please logout first');
-        window.location.href='$role/dashboard.php'</script>;
+        window.location.href='$role/dashboard.php';
+        </script>;
         ";
         exit();
     }

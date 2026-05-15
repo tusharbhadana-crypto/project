@@ -91,7 +91,7 @@
                     > -->
                     <select name="role" id="" class="form-select" required>
                         <option value="" selected disabled>Select Role</option>
-                        <option value="Admin">Admin</option>
+
                         <option value="Recruiter">Recruiter</option>
                         <option value="Applicant">Applicant</option>
                     </select>
